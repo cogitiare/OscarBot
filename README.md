@@ -1,2 +1,2 @@
 # OscarBot
-## Discord bot to ping all users in a voice channel when the first person joins
+## Discord bot to ping all users when someone has joined the server voice channel
