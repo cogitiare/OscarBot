@@ -2,7 +2,7 @@ const { Client, VoiceChannel, Collection, Intents  } = require('discord.js');
 const { registerCommands, registerEvents } = require('./utils/registry');
 const config = require('../slappey.json');
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
+const client = new Client({presence: {status: 'online', activities: [{name: "eating dryer lint", type: "PLAYING"}]}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
 const { Player } = require('discord-music-player');
 const player = new Player(client, {
     // options here
@@ -26,14 +26,6 @@ require("dotenv").config();
   
   await registerEvents(client, '../events');
   await client.login(process.env.BOT_TOKEN);
-
-  client.user.setPresence({
-    status: "online",  //You can show online, idle....
-    activity: {
-        name: "eating dryer lint",  //The message shown
-        type: "PLAYING" //PLAYING: WATCHING: LISTENING: STREAMING:
-    }
-  });
   
   // Message/command listeners
   client.on('message', async (msg) => {
