@@ -1,15 +1,29 @@
-const { Client, VoiceChannel } = require('discord.js');
+const { Client, VoiceChannel, Collection, Intents  } = require('discord.js');
 const { registerCommands, registerEvents } = require('./utils/registry');
 const config = require('../slappey.json');
-const client = new Client();
+
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
+const { Player } = require('discord-music-player');
+const player = new Player(client, {
+    // options here
+})
+client.player = player;
+
+const fs = require('fs');
+client.commands = new Collection();
+const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
+for (const file of commandFiles){
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+}
+
 var count;
 require("dotenv").config();
 
 (async () => {
-  client.commands = new Map();
   client.events = new Map();
   client.prefix = config.prefix;
-  await registerCommands(client, '../commands');
+  
   await registerEvents(client, '../events');
   await client.login(process.env.BOT_TOKEN);
 
@@ -19,10 +33,10 @@ require("dotenv").config();
         name: "eating dryer lint",  //The message shown
         type: "PLAYING" //PLAYING: WATCHING: LISTENING: STREAMING:
     }
-});
+  });
   
-  //Testing message listeners
-  client.on('message', msg => {
+  // Message/command listeners
+  client.on('message', async (msg) => {
     if (msg.content === 'ping') {
       msg.reply('Pong!');
     }
@@ -30,6 +44,36 @@ require("dotenv").config();
     if(msg.content.toLowerCase().includes("oscar")){
       const reactionEmoji = msg.guild.emojis.cache.find(emoji => emoji.name === 'oscar');
       msg.react(reactionEmoji);
+    }
+
+    // Get arguments from command
+    const args = msg.content.slice(client.prefix.length).split(/ +/);
+    const command = args.shift().toLowerCase();
+    let guildQueue = client.player.getQueue(msg.guild.id);
+
+    // Play song command
+    if(command === "play"){
+
+      const voiceChannel = msg.member.voice.channel;
+
+      // If no arguments are supplied
+      if(!args.length) return msg.channel.send("You gotta give me more arguments in the command");
+
+      // If user isn't in VC
+      if(!voiceChannel) return msg.channel.send("Don't use this command when you're not in VC mister");
+
+      // Create a queue to load the song from and play it. Once nothing is left, leave
+      let queue = client.player.createQueue(msg.guild.id);
+      await queue.join(msg.member.voice.channel);
+      let song = await queue.play(args.join(' ')).catch(_ => {
+          if(!guildQueue)
+              queue.stop();
+      });
+    }
+
+    // Leave channel command
+    if(command === "leave"){
+      guildQueue.stop();
     }
   });
 
@@ -63,8 +107,19 @@ require("dotenv").config();
       console.log(count + " people in voice chat.");
       //channel.send(count);
     }
-
- },);
+ });
+  client.player
+    .on('songAdd', (queue, song) => {
+      // Send message to bot command channel
+      const channel = newMember.guild.channels.cache.get(818325157512609873);
+      channel.send('Playing ', song.name)
+    });
+  client.player
+    .on('clientDisconnect', (queue) => {
+      // Send message to bot command channel
+      const channel = newMember.guild.channels.cache.get(818325157512609873);
+      channel.send('Leaving VC')
+    });
 
 })();
 
