@@ -72,9 +72,9 @@ require("dotenv").config();
     }
 
     // Leave channel command
-    if(command === "leave"){
+    if(command === "leave" && guildQueue){
       guildQueue.stop();
-    }
+    } 
   });
 
  
@@ -119,6 +119,12 @@ require("dotenv").config();
       // Send message to bot command channel
       const channel = newMember.guild.channels.cache.get(818325157512609873);
       channel.send('Leaving VC')
+    });
+  // Emitted when there was an error in runtime
+  client.player
+    .on('error', (error, queue) => {
+      const channel = newMember.guild.channels.cache.get(818325157512609873);
+      channel.send(`Error: ${error}`);
     });
 
 })();
