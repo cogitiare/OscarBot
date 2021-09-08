@@ -20,12 +20,11 @@ for (const file of commandFiles){
 var count;
 require("dotenv").config();
 
-(async () => {
   client.events = new Map();
   client.prefix = config.prefix;
   
-  await registerEvents(client, '../events');
-  await client.login(process.env.BOT_TOKEN);
+  registerEvents(client, '../events');
+  client.login(process.env.BOT_TOKEN);
   
   // Message/command listeners
   client.on('message', async (msg) => {
@@ -67,6 +66,9 @@ require("dotenv").config();
     if(command === "leave" && guildQueue){
       guildQueue.stop();
     } 
+    if(command === 'skip') {
+      guildQueue.skip();
+    }
   });
 
  
@@ -87,7 +89,7 @@ require("dotenv").config();
     if((newUserChannel.channel !== null) && (oldUserChannel.channel === null) && (count == 0)){
       count++;
       console.log(count + " person in voice chat.");
-      channel.send(message);
+      // channel.send(message);
     }
     else if(newUserChannel.channel !== null && oldUserChannel.channel === null){
       count++;      
@@ -103,21 +105,20 @@ require("dotenv").config();
   client.player
     .on('songAdd', (queue, song) => {
       // Send message to bot command channel
-      const channel = newMember.guild.channels.cache.get(818325157512609873);
-      channel.send('Playing ', song.name)
-    });
-  client.player
+      client.channels.cache.get('818325157512609873').send(`Added ${song}`);
+      console.log(song.name);
+    })
     .on('clientDisconnect', (queue) => {
       // Send message to bot command channel
-      const channel = newMember.guild.channels.cache.get(818325157512609873);
-      channel.send('Leaving VC')
-    });
-  // Emitted when there was an error in runtime
-  client.player
+      client.channels.cache.get('818325157512609873').send('Leaving VC');
+    })
     .on('error', (error, queue) => {
-      const channel = newMember.guild.channels.cache.get(818325157512609873);
-      channel.send(`Error: ${error}`);
+      client.channels.cache.get('818325157512609873').send(`Error: ${error}`);
+    })
+    .on('queueEnd', (queue) => { 
+      client.channels.cache.get('818325157512609873').send('Leaving VC');
+    })
+    .on('songChanged', (queue, newSong, oldSong) => {
+      client.channels.cache.get('818325157512609873').send(`${newSong} is now playing.`);
     });
-
-})();
 
