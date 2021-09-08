@@ -89,7 +89,7 @@ require("dotenv").config();
     if((newUserChannel.channel !== null) && (oldUserChannel.channel === null) && (count == 0)){
       count++;
       console.log(count + " person in voice chat.");
-      // channel.send(message);
+      channel.send(message);
     }
     else if(newUserChannel.channel !== null && oldUserChannel.channel === null){
       count++;      
