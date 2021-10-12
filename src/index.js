@@ -107,8 +107,14 @@ require("dotenv").config();
  });
   client.player
     .on('songAdd', (queue, song) => {
-      // Added song to queue message
-      client.channels.cache.get('818325157512609873').send(`Added ${song}`);
+      // Added song to queue message'
+      try {
+        client.channels.cache.get('818325157512609873').send(`Added ${song}`);
+      } catch (error) {
+        client.channels.cache.get('818325157512609873').send(`I'm having issues searching videos right now. Sorry!`);
+        client.channels.cache.get('818325157512609873').send(`@cogitaire`);
+      }
+      
       console.log(song.name);
     })
     .on('clientDisconnect', (queue) => {
