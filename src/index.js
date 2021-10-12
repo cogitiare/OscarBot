@@ -10,6 +10,8 @@ const player = new Player(client, {
 client.player = player;
 
 const fs = require('fs');
+
+// Import commands (currently unused)
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles){
@@ -32,6 +34,7 @@ require("dotenv").config();
       msg.reply('Pong!');
     }
 
+    // React to any message that contains "oscar" with the oscar emote
     if(msg.content.toLowerCase().includes("oscar")){
       const reactionEmoji = msg.guild.emojis.cache.find(emoji => emoji.name === 'oscar');
       msg.react(reactionEmoji);
@@ -40,6 +43,7 @@ require("dotenv").config();
     // Get arguments from command
     const args = msg.content.slice(client.prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
+    // Make song queue
     let guildQueue = client.player.getQueue(msg.guild.id);
 
     // Play song command
@@ -66,6 +70,7 @@ require("dotenv").config();
     if(command === "leave" && guildQueue){
       guildQueue.stop();
     } 
+    // Skip command
     if(command === 'skip') {
       guildQueue.skip();
     }
@@ -85,7 +90,7 @@ require("dotenv").config();
     if(count==null){
       count = 0;
     }
-    //user joins
+    //user joins... send ping to all
     if((newUserChannel.channel !== null) && (oldUserChannel.channel === null) && (count == 0)){
       count++;
       console.log(count + " person in voice chat.");
@@ -94,31 +99,32 @@ require("dotenv").config();
     else if(newUserChannel.channel !== null && oldUserChannel.channel === null){
       count++;      
       console.log(count + " people in voice chat.");
-      //channel.send(message);
     }
     else if(newUserChannel.channel === null && oldUserChannel.channel !== null){
       count--;      
       console.log(count + " people in voice chat.");
-      //channel.send(count);
     }
  });
   client.player
     .on('songAdd', (queue, song) => {
-      // Send message to bot command channel
+      // Added song to queue message
       client.channels.cache.get('818325157512609873').send(`Added ${song}`);
       console.log(song.name);
     })
     .on('clientDisconnect', (queue) => {
-      // Send message to bot command channel
+      // Leaving VC message
       client.channels.cache.get('818325157512609873').send('Leaving VC');
     })
     .on('error', (error, queue) => {
+      // Music player error message
       client.channels.cache.get('818325157512609873').send(`Error: ${error}`);
     })
     .on('queueEnd', (queue) => { 
+      // Leaving VC message
       client.channels.cache.get('818325157512609873').send('Leaving VC');
     })
     .on('songChanged', (queue, newSong, oldSong) => {
+      // Now playing message
       client.channels.cache.get('818325157512609873').send(`${newSong} is now playing.`);
     });
 
