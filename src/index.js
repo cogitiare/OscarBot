@@ -1,6 +1,7 @@
-const { Client, VoiceChannel, Collection, Intents  } = require('discord.js');
+const { Client, VoiceChannel, Collection, Intents, GuildEmojiRoleManager  } = require('discord.js');
 const { registerCommands, registerEvents } = require('./utils/registry');
 const config = require('../slappey.json');
+var Scraper = require('images-scraper');
 
 const client = new Client({presence: {status: 'online', activities: [{name: "eating dryer lint", type: "PLAYING"}]}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_VOICE_STATES] });
 const { Player } = require('discord-music-player');
@@ -8,6 +9,12 @@ const player = new Player(client, {
     // options here
 })
 client.player = player;
+
+const google = new Scraper({
+  puppeteer: {
+    headless: true
+  }
+})
 
 const fs = require('fs');
 
@@ -73,6 +80,20 @@ require("dotenv").config();
     // Skip command
     if(command === 'skip') {
       guildQueue.skip();
+    }
+
+    if(command === 'actor'){
+      const img_query = args.join(' ') + ' 2021';
+  
+      if(!img_query) return msg.channel.send('Please enter arguments for your command!');
+
+      const img_results = await google.scrape(img_query, 1);
+      try{
+        msg.channel.send(img_results[0].url);
+      }
+      catch(error){
+        msg.channel.send("No results found...");
+      }
     }
   });
 
