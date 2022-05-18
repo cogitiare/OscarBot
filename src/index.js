@@ -1,3 +1,11 @@
+// TODO
+// get commands split into folders and seperate files
+// get actor image bot working
+// get poll command working
+// !puff/!pass command
+//    add easter eggs if he holds it too long or needs a puff
+// 
+
 const { Client, VoiceChannel, Collection, Intents, GuildEmojiRoleManager  } = require('discord.js');
 const { registerCommands, registerEvents } = require('./utils/registry');
 const config = require('../slappey.json');
