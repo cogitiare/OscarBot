@@ -1,10 +1,16 @@
 // TODO
+// Fix music commands
+  // 50/50 chance of him saying no to geoff
+  // Don't play a song if longer than 20min
+  // stream quality fixes
 // get commands split into folders and seperate files
 // get actor image bot working
 // get poll command working
 // !puff/!pass command
-//    add easter eggs if he holds it too long or needs a puff
-// 
+  // add easter eggs if he holds it too long or needs a puff
+// add function for WHO started a call
+// feed command with chance of making oscar throw up
+  //  feed different items
 
 const { Client, VoiceChannel, Collection, Intents, GuildEmojiRoleManager  } = require('discord.js');
 const { registerCommands, registerEvents } = require('./utils/registry');
