@@ -11,6 +11,7 @@
 // add function for WHO started a call
 // feed command with chance of making oscar throw up
   //  feed different items
+// Have him say very rude things when people @ him
 
 const { Client, VoiceChannel, Collection, Intents, GuildEmojiRoleManager  } = require('discord.js');
 const { registerCommands, registerEvents } = require('./utils/registry');
