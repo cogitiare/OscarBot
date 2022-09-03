@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const { BOT_TOKEN } = process.env;
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const { DisTube } = require("distube");
 const fs = require("fs");
 
 const client = new Client({
@@ -14,6 +15,12 @@ const client = new Client({
 });
 client.commands = new Collection();
 client.commandArray = [];
+
+client.DisTube = new DisTube(client, {
+  leaveOnFinish: true,
+  leaveOnStop: true,
+  emitAddSongWhenCreatingQueue: false,
+});
 
 const functionFolders = fs.readdirSync(`./src/functions`);
 for (const folder of functionFolders) {
