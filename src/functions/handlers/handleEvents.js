@@ -23,6 +23,12 @@ module.exports = (client) => {
           }
           break;
         case "music":
+          for (const file of eventFiles) {
+            const event = require(`../../events/${folder}/${file}`);
+            client.DisTube.on(event.name, (...args) =>
+              event.execute(...args, client)
+            );
+          }
           break;
         default:
           break;
