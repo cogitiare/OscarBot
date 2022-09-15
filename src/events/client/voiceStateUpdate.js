@@ -14,7 +14,7 @@ module.exports = {
     ) {
       client.channels.cache
         .get(ALL_CHANNEL_ID)
-        .send(`@ everyone ${newState.member.user.username} has started a call`);
+        .send(`@everyone ${newState.member.user.username} has started a call`);
     }
   },
 };
