@@ -10,7 +10,6 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = {
   name: "messageReactionAdd",
   async execute(messageReaction, user, client) {
-    // console.log(messageReaction.message);
     if (
       messageReaction.message.channel.id !== ALL_CHANNEL_ID &&
       messageReaction.message.channel.id !== GENERAL_CHANNEL_ID
