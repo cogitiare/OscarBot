@@ -11,22 +11,24 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction, client) {
-    interaction
-      .reply({ content: "...", fetchReply: true })
-      .then((message) => message.delete())
-      .catch(console.error);
     const voiceChannel = interaction.member.voice.channel;
-    const searchInput = interaction.options.get("songlink").value;
-
-    if (!voiceChannel)
+    if (!voiceChannel) {
       return interaction.reply(
         "You must be in a voice channel to use this command"
       );
+    } else {
+      interaction
+        .reply({ content: "...", fetchReply: true })
+        .then((message) => message.delete())
+        .catch(console.error);
 
-    client.DisTube.play(voiceChannel, searchInput, {
-      interaction,
-      textChannel: interaction.textChannel,
-      member: interaction.member,
-    });
+      const searchInput = interaction.options.get("songlink").value;
+
+      client.DisTube.play(voiceChannel, searchInput, {
+        interaction,
+        textChannel: interaction.textChannel,
+        member: interaction.member,
+      });
+    }
   },
 };
