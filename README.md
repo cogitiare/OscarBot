@@ -16,4 +16,6 @@
 
 ### /ping
 
+### /poll
+
 ### /actor
