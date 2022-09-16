@@ -1,5 +1,4 @@
 const {
-  OSCAR_EMOJI_ID,
   HOF_CHANNEL_ID,
   ALL_CHANNEL_ID,
   GENERAL_CHANNEL_ID,
@@ -30,7 +29,7 @@ module.exports = {
 
     // DO the thing :/
     if (
-      messageReaction.emoji.id === OSCAR_EMOJI_ID &&
+      messageReaction.emoji.id === SALUTE_EMOJI_ID &&
       messageReaction.count == 3
     ) {
       const author = messageReaction.message.author;
