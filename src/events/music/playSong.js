@@ -5,6 +5,8 @@ module.exports = {
   async execute(queue, song, client) {
     client.channels.cache
       .get(BOT_CHANNEL_ID)
-      .send(`Playing song ${song.name} - ${song.formattedDuration}`);
+      .send(
+        `${song.user} is playing song ${song.name} - ${song.formattedDuration}`
+      );
   },
 };
