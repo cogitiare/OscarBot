@@ -16,6 +16,7 @@ const client = new Client({
 });
 client.commands = new Collection();
 client.commandArray = [];
+client.callStart = null;
 
 client.DisTube = new DisTube(client, {
   leaveOnFinish: true,
