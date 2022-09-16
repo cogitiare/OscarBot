@@ -22,11 +22,6 @@ module.exports = {
 
     try {
       await queue.skip();
-      interaction
-        .reply({ content: "...", fetchReply: true })
-        .then((message) => message.delete())
-        .catch(console.error);
-
       client.channels.cache
         .get(BOT_CHANNEL_ID)
         // combine embeds
