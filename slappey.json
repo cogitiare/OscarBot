@@ -1,6 +1,0 @@
-{
-  "name": "OscarBot",
-  "language": "javascript",
-  "manager": "npm",
-  "prefix": "!"
-}
