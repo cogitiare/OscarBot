@@ -26,7 +26,10 @@ module.exports = {
       client.channels.cache
         .get(ALL_CHANNEL_ID)
         .send(`@everyone ${newState.member.user.username} has started a call`);
-    } else if (newState.channel === null) {
+    } else if (
+      newState.channel === null &&
+      oldState.channelId === MAIN_CALL_CHANNEL
+    ) {
       setTimeout(() => {
         let voiceChannel = client.guilds.cache
           .get(BOT_GUILD_ID)
@@ -40,6 +43,8 @@ module.exports = {
           client.channels.cache
             .get(ALL_CHANNEL_ID)
             .send(`Call ended - ${msToTime(length)}`);
+
+          client.callStart = null;
         }
       }, 2000);
     }

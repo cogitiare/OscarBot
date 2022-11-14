@@ -24,11 +24,13 @@ module.exports = {
 
       const searchInput = interaction.options.get("songlink").value;
 
-      client.DisTube.play(voiceChannel, searchInput, {
-        interaction,
-        textChannel: interaction.textChannel,
-        member: interaction.member,
-      });
+      try {
+        client.DisTube.play(voiceChannel, searchInput, {
+          interaction,
+          textChannel: interaction.textChannel,
+          member: interaction.member,
+        });
+      } catch (e) {}
     }
   },
 };
