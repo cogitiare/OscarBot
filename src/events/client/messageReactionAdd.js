@@ -49,13 +49,14 @@ module.exports = {
         });
 
         // add each image to embed
-        attachments.map((attachment) => {
-          newEmbeds.push(
-            new EmbedBuilder()
-              .setURL(messageReaction.message.url)
-              .setImage(attachment)
-          );
-        });
+        // TODO: WHY this not work
+        // attachments.map((attachment) => {
+        //   newEmbeds.push(
+        //     new EmbedBuilder()
+        //       .setURL(messageReaction.message.url)
+        //       .setImage(attachment)
+        //   );
+        // });
       }
 
       client.channels.cache
